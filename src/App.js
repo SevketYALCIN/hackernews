@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
+import Search from './components/search/search';
+import Table from './components/table/table';
 
 const list = [
   {
@@ -25,41 +27,33 @@ class App extends Component {
     super(props);
 
     this.state = {
-      list
+      list,
+      searchTerm: ''
     };
 
     this.onDismiss = this.onDismiss.bind(this);
+    this.onSearchChange = this.onSearchChange.bind(this);
   }
 
   onDismiss(id) {
-    const updatedList = this.state.list.filter((item) => item.objectID !== id);
-    this.setState({list: updatedList})
+    const updatedList = this.state.list.filter(item => item.objectID !== id);
+    this.setState({ list: updatedList });
+  }
+
+  onSearchChange(event) {
+    this.setState({ searchTerm: event.target.value });
   }
 
   render() {
+    const { searchTerm, list } = this.state;
     return (
-      <div className="App">
-        <header className="App-header">
-          <h2>Hackernews</h2>
-        </header>
-        {this.state.list.map(item => (
-          <article key={item.objectID}>
-            <h3>
-              <a href={item.url}>{item.title}</a>
-            </h3>
-            <span>{item.author}</span>
-            <span>{item.num_comments}</span>
-            <span>{item.points}</span>
-            <span>
-              <button
-                onClick={() => this.onDismiss(item.objectID)}
-                type="button"
-              >
-                Dismiss
-              </button>
-            </span>
-          </article>
-        ))}
+      <div className="page">
+        <div className="interactions">
+          <Search value={searchTerm} onChange={this.onSearchChange}>
+            Search
+          </Search>
+        </div>
+        <Table list={list} pattern={searchTerm} onDismiss={this.onDismiss} />
       </div>
     );
   }
