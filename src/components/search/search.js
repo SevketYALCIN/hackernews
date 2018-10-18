@@ -1,9 +1,9 @@
 import React from 'react';
 
-const Search = ({ children, value, onChange }) => (
-  <form>
-    <label>{children}</label>
+const Search = ({ children, value, onChange, onSubmit }) => (
+  <form onSubmit={onSubmit}>
     <input type="text" value={value} onChange={onChange} />
+    <button type="submit">{children}</button>
   </form>
 );
 
