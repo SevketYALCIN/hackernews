@@ -1,10 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import renderer from 'react-test-renderer';
+import Enzyme, { shallow } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import App from './App';
 import Search from './components/search/search';
 import Button from './components/button/button';
 import Table from './components/table/table';
+
+Enzyme.configure({ adapter: new Adapter() });
 
 describe('App', () => {
   it('renders without crashing', () => {
@@ -45,6 +49,11 @@ describe('Button', () => {
     const tree = component.toJSON();
     expect(tree).toMatchSnapshot();
   });
+
+  it('shows a button with a `Search` text', () => {
+    const element = shallow(<Button className="test-button">Search</Button>);
+    expect(element.find('.test-button').text()).toBe('Search');
+  });
 });
 
 describe('Table', () => {
@@ -54,13 +63,20 @@ describe('Table', () => {
       { title: '2', author: '2', num_comments: 1, points: 2, objectID: 'z' }
     ]
   };
+
   it('renders without crashing', () => {
     const div = document.createElement('div');
     ReactDOM.render(<Table {...props} />, div);
   });
+
   test('has a valid snapshot', () => {
     const component = renderer.create(<Table {...props} />);
     const tree = component.toJSON();
     expect(tree).toMatchSnapshot();
+  });
+
+  it('shows two items in list', () => {
+    const element = shallow(<Table {...props} />);
+    expect(element.find('.table-row').length).toBe(2);
   });
 });
