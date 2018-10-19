@@ -41,17 +41,17 @@ describe('Search', () => {
 describe('Button', () => {
   it('renders without crashing', () => {
     const div = document.createElement('div');
-    ReactDOM.render(<Button>Give Me More</Button>, div);
+    ReactDOM.render(<Button onClick={() => {}}>Give Me More</Button>, div);
     ReactDOM.unmountComponentAtNode(div);
   });
   test('has a valid snapshot', () => {
-    const component = renderer.create(<Button>Give Me More</Button>);
+    const component = renderer.create(<Button  onClick={() => {}}>Give Me More</Button>);
     const tree = component.toJSON();
     expect(tree).toMatchSnapshot();
   });
 
   it('shows a button with a `Search` text', () => {
-    const element = shallow(<Button className="test-button">Search</Button>);
+    const element = shallow(<Button  onClick={() => {}} className="test-button">Search</Button>);
     expect(element.find('.test-button').text()).toBe('Search');
   });
 });
